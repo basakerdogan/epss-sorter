@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EPSS Sorter</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .cve-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .cve-item {
+            width: calc(100% / 5);
+            padding: 5px;
+        }
+        .cve-item input[type="checkbox"] {
+            display: none;
+        }
+        .cve-item label {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            word-wrap: break-word;
+        }
+        .cve-item input[type="checkbox"]:checked + label {
+            color: white;
+        }
+    </style>
+    <script>
+        function randomColor() {
+            const colors = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#FFC300", "#FF33A8", "#A833FF", "#33FFF7", "#FF8333"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.cve-item input[type="checkbox"]').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.nextElementSibling.style.backgroundColor = randomColor();
+                    } else {
+                        this.nextElementSibling.style.backgroundColor = "";
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">EPSS Sorter</h1>
+        <form action="/get_scores" method="post">
+            <div class="form-group">
+                <label for="cve">Select CVEs:</label>
+                <div id="cve" class="cve-list">
+                    {% for cve in cves %}
+                    <div class="cve-item">
+                        <input type="checkbox" id="{{ cve }}" name="cve" value="{{ cve }}">
+                        <label for="{{ cve }}">{{ cve }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="manual_cves">Or Add CVEs (comma separated):</label>
+                <input type="text" class="form-control" id="manual_cves" name="manual_cves">
+            </div>
+            <button type="submit" class="btn btn-primary">Get Scores</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EPSS Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">EPSS Results</h1>
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+        <h2>Graph</h2>
+        <img src="{{ url_for('static', filename='epss_scores.png') }}" alt="EPSS Scores">
+        <a href="/" class="btn btn-secondary mt-3">Go Back</a>
+    </div>
+</body>
+</html>
